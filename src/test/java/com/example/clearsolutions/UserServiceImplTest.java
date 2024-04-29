@@ -6,19 +6,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-@SpringBootTest(properties = "user.age=18")
-@ActiveProfiles("test")
+@SpringBootTest
 public class UserServiceImplTest {
 
     @InjectMocks
     private UserServiceImpl userService;
 
     @Test
-    public void createUserSuccessTest() {
+    void createUserSuccessTest() {
         var john = Utils.createUser("example@email.com",
                 "John",
                 "Doe",
@@ -28,7 +26,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void createUserUserAlreadyExistExceptionTest() {
+    void createUserUserAlreadyExistExceptionTest() {
         var john = Utils.createUser("example1@email.com",
                 "John",
                 "Doe",
@@ -41,8 +39,6 @@ public class UserServiceImplTest {
 
         Exception exception = Assertions.assertThrows(UserAlreadyExistException.class,
                 () -> userService.createUser(vitaliy));
-
-//        Assertions.assertEquals(1, userService.getUsersMapSize());
     }
 
 }

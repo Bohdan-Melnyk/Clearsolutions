@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -27,36 +26,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(User newUser) {
-        userExistCheck(newUser);
-
+        checkIfUserAlreadyExist(newUser.getEmail());
         isEighteenYearsOld(newUser.getBirthDate());
-
         userMap.put(newUser.getEmail(), newUser);
     }
 
     @Override
     public void updateUser(User user) {
-        var currUser = getUser(user.getEmail());
-        if (currUser.isPresent()) {
-            userMap.put(currUser.get().getEmail(), user);
-        } else throw new UserNotFoundException("User with email " + user.getEmail() + " doesn't exist");
-
+        checkIfUserFound(user.getEmail());
+        isEighteenYearsOld(user.getBirthDate());
+        userMap.put(user.getEmail(), user);
     }
 
     @Override
     public void updateOptionalUserFields(String email, UserOptionalFieldsDto dto) {
-        var user = getUser(email);
-        if (user.isPresent()) {
-            user.get().setAddress(dto.getAddress());
-            user.get().setPhoneNumber(dto.getPhoneNumber());
-        } else throw new UserNotFoundException("User with email " + email + " doesn't exist");
+        checkIfUserFound(email);
+        userMap.get(email).setAddress(dto.getAddress());
+        userMap.get(email).setPhoneNumber(dto.getPhoneNumber());
     }
 
     @Override
     public void deleteUser(String email) {
-        if (userMap.containsKey(email)) {
-            userMap.remove(email);
-        } else throw new UserNotFoundException("User with email " + email + " doesn't exist");
+        checkIfUserFound(email);
+        userMap.remove(email);
     }
 
     @Override
@@ -75,20 +67,21 @@ public class UserServiceImpl implements UserService {
         return Collections.emptyList();
     }
 
-    private Optional<User> getUser(String email) {
-        return Optional.ofNullable(userMap.get(email));
-    }
-
     private void isEighteenYearsOld(LocalDate dateOfBirth) {
         if (Period.between(dateOfBirth, LocalDate.now()).getYears() < age) {
             throw new UserNotAdultException("User is not 18 years old");
         }
-//        return Period.between(dateOfBirth, LocalDate.now()).getYears() >= age;
     }
 
-    private void userExistCheck(User user) {
-        if (userMap.containsKey(user.getEmail())) {
-            throw new UserAlreadyExistException("User with email " + user.getEmail() + " already exists");
+    private void checkIfUserAlreadyExist(String email) {
+        if (userMap.containsKey(email)) {
+            throw new UserAlreadyExistException("User with email " + email + " already exists");
+        }
+    }
+
+    private void checkIfUserFound(String email) {
+        if (!userMap.containsKey(email)) {
+            throw new UserNotFoundException("User with email " + email + " doesn't exist");
         }
     }
 }
