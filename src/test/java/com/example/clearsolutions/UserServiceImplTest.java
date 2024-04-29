@@ -3,9 +3,11 @@ package com.example.clearsolutions;
 import com.example.clearsolutions.exception.UserAlreadyExistException;
 import com.example.clearsolutions.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 
@@ -14,6 +16,11 @@ public class UserServiceImplTest {
 
     @InjectMocks
     private UserServiceImpl userService;
+
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(userService, "age", 18);
+    }
 
     @Test
     void createUserSuccessTest() {
