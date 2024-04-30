@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        checkIfUserFound(user.getEmail());
+    public void updateUser(String email, User user) {
+        checkIfUserFound(email);
         isEighteenYearsOld(user.getBirthDate());
         userMap.put(user.getEmail(), user);
     }
@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService {
                     .toList();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public Map<String, User> userMap() {
+        return userMap;
     }
 
     private void isEighteenYearsOld(LocalDate dateOfBirth) {

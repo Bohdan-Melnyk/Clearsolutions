@@ -41,8 +41,9 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public ResponseEntity<ResponseDto> updateUser(@RequestBody @Valid User user) {
-        userService.updateUser(user);
+    public ResponseEntity<ResponseDto> updateUser(@RequestParam @Email String email,
+                                                  @RequestBody @Valid User user) {
+        userService.updateUser(email, user);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto("200", "User updated successfully"));

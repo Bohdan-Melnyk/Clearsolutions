@@ -5,12 +5,13 @@ import com.example.clearsolutions.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
     void createUser(User user);
 
-    void updateUser(User user);
+    void updateUser(String email, User user);
 
     void updateOptionalUserFields(String email, UserOptionalFieldsDto dto);
 
@@ -19,4 +20,6 @@ public interface UserService {
     int getUsersMapSize();
 
     List<User> birthRange(LocalDate from, LocalDate to);
+
+    Map<String, User> userMap();
 }
