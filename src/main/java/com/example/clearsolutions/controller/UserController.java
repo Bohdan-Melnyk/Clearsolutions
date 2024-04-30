@@ -32,38 +32,38 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping("/user/create")
+    @PostMapping("/user")
     public ResponseEntity<ResponseDto> createUser(@RequestBody @Valid User user) {
         userService.createUser(user);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ResponseDto("201", "User created successfully"));
+                .body(new ResponseDto(String.valueOf(HttpStatus.CREATED.value()), "User created successfully"));
     }
 
-    @PutMapping("/user/update")
+    @PutMapping("/user")
     public ResponseEntity<ResponseDto> updateUser(@RequestParam @Email String email,
                                                   @RequestBody @Valid User user) {
         userService.updateUser(email, user);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto("200", "User updated successfully"));
+                .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User updated successfully"));
     }
 
-    @PatchMapping("/user/update/optional")
+    @PatchMapping("/user")
     public ResponseEntity<ResponseDto> updateOptionalUserFields(@RequestParam @Email String email,
                                                                 @RequestBody @Valid UserOptionalFieldsDto dto) {
         userService.updateOptionalUserFields(email, dto);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto("200", "User updated successfully"));
+                .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User updated successfully"));
     }
 
-    @DeleteMapping("/user/delete")
+    @DeleteMapping("/user")
     public ResponseEntity<ResponseDto> deleteUser(@RequestParam @Email String email) {
         userService.deleteUser(email);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto("200", "User deleted successfully"));
+                .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User deleted successfully"));
     }
 
     @PostMapping("/user/search")

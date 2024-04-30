@@ -62,7 +62,7 @@ public interface UserService {
      @param email the email address of the user to check
      @return true if a user with the specified email address is present, false otherwise
      */
-    boolean isUserPresent(String email);
+    boolean isUserExist(String email);
 
 
     /**
@@ -71,5 +71,5 @@ public interface UserService {
      @param email the email address of the user to retrieve
      @return the User object corresponding to the specified email address, or null if not found
      */
-    User readUser(String email);
+    User getUserByEmail(String email);
 }

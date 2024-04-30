@@ -22,7 +22,7 @@ public class User {
     private String firstName;
 
     @NotEmpty(message = "Last name can't be empty")
-    private String LastName;
+    private String lastName;
 
     @Past(message = "Date must be in past")
     private LocalDate birthDate;

@@ -19,7 +19,7 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static Map<String, User> userMap = new HashMap<>();
+    private static final Map<String, User> userMap = new HashMap<>();
 
     @Value("${user.age}")
     private int age;
@@ -58,8 +58,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateOptionalUserFields(String email, UserOptionalFieldsDto dto) {
         checkIfUserFound(email);
-        userMap.get(email).setAddress(dto.getAddress());
-        userMap.get(email).setPhoneNumber(dto.getPhoneNumber());
+        var userToUpdate = getUserByEmail(email);
+        userToUpdate.setAddress(dto.getAddress());
+        userToUpdate.setPhoneNumber(dto.getPhoneNumber());
     }
 
     /**
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
      @return true if a user with the specified email address is present, false otherwise
      */
     @Override
-    public boolean isUserPresent(String email) {
+    public boolean isUserExist(String email) {
         return userMap.containsKey(email);
     }
 
@@ -120,25 +121,25 @@ public class UserServiceImpl implements UserService {
      @return the User object corresponding to the specified email address, or null if not found
      */
     @Override
-    public User readUser(String email) {
+    public User getUserByEmail(String email) {
         checkIfUserFound(email);
         return userMap.get(email);
     }
 
     private void isEighteenYearsOld(LocalDate dateOfBirth) {
         if (Period.between(dateOfBirth, LocalDate.now()).getYears() < age) {
-            throw new UserNotAdultException("User is not 18 years old");
+            throw new UserNotAdultException("User is not" + age + " years old");
         }
     }
 
     private void checkIfUserAlreadyExist(String email) {
-        if (isUserPresent(email)) {
+        if (isUserExist(email)) {
             throw new UserAlreadyExistException("User with email " + email + " already exists");
         }
     }
 
     private void checkIfUserFound(String email) {
-        if (!isUserPresent(email)) {
+        if (!isUserExist(email)) {
             throw new UserNotFoundException("User with email " + email + " doesn't exist");
         }
     }

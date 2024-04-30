@@ -1,5 +1,6 @@
-package com.example.clearsolutions;
+package com.example.clearsolutions.service;
 
+import com.example.clearsolutions.Utils;
 import com.example.clearsolutions.exception.UserAlreadyExistException;
 import com.example.clearsolutions.exception.UserNotAdultException;
 import com.example.clearsolutions.exception.UserNotFoundException;
@@ -40,8 +41,8 @@ public class UserServiceImplTest {
                 "Anderson",
                 LocalDate.of(86, 11, 10));
         userService.createUser(benjamin);
-        assertTrue(userService.isUserPresent("example@email.com"));
-        assertTrue(userService.isUserPresent("benjamin@email.com"));
+        assertTrue(userService.isUserExist("example@email.com"));
+        assertTrue(userService.isUserExist("benjamin@email.com"));
     }
 
     @Test
@@ -50,23 +51,23 @@ public class UserServiceImplTest {
                 "John",
                 "Doe",
                 LocalDate.of(1990, 1, 2));
-        var vitaliy = Utils.createUser("example1@email.com",
+        var david = Utils.createUser("example1@email.com",
                 "David",
                 "Jones",
                 LocalDate.of(2000, 3, 15));
         userService.createUser(john);
 
         assertThrows(UserAlreadyExistException.class,
-                () -> userService.createUser(vitaliy));
+                () -> userService.createUser(david));
     }
 
     @Test
     void createUserUserNotAdultExceptionTest() {
-        var john = Utils.createUser("example@email.com",
+        var olivia = Utils.createUser("example@email.com",
                 "Olivia",
                 "Taylor",
                 LocalDate.of(2015, 7, 12));
-        assertThrows(UserNotAdultException.class,() -> userService.createUser(john));
+        assertThrows(UserNotAdultException.class,() -> userService.createUser(olivia));
     }
 
     @Test
@@ -77,7 +78,7 @@ public class UserServiceImplTest {
                 "Johnson",
                 LocalDate.of(2006, 4, 8));
         userService.updateUser("example@email.com", emily);
-        var updatedUser = userService.readUser(newEmail);
+        var updatedUser = userService.getUserByEmail(newEmail);
 
         assertEquals(emily.getBirthDate(), updatedUser.getBirthDate());
         assertEquals(emily.getFirstName(), updatedUser.getFirstName());
@@ -108,7 +109,7 @@ public class UserServiceImplTest {
 
         var optionalFieldsDto = Utils.optionalFieldsDto(address, phoneNumber);
         userService.updateOptionalUserFields(email, optionalFieldsDto);
-        var updatedUser = userService.readUser(email);
+        var updatedUser = userService.getUserByEmail(email);
 
         assertEquals(address, updatedUser.getAddress());
         assertEquals(phoneNumber, updatedUser.getPhoneNumber());
@@ -132,8 +133,8 @@ public class UserServiceImplTest {
         userService.deleteUser(jessicaEmail);
         userService.deleteUser(michaelEmail);
 
-        assertFalse(userService.isUserPresent(jessicaEmail));
-        assertFalse(userService.isUserPresent(michaelEmail));
+        assertFalse(userService.isUserExist(jessicaEmail));
+        assertFalse(userService.isUserExist(michaelEmail));
     }
 
     @Test
