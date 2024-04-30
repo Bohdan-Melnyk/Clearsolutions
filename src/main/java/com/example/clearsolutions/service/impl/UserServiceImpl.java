@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     @Value("${user.age}")
     private int age;
 
+    /**
+     *
+     Creates a new user.
+     @param newUser the User object containing information about the user to be created
+     */
     @Override
     public void createUser(User newUser) {
         checkIfUserAlreadyExist(newUser.getEmail());
@@ -31,6 +36,12 @@ public class UserServiceImpl implements UserService {
         userMap.put(newUser.getEmail(), newUser);
     }
 
+    /**
+     *
+     Updates all fields of an existing user with the specified email address.
+     @param email the email address of the user to be updated
+     @param user the User object containing updated information
+     */
     @Override
     public void updateUser(String email, User user) {
         checkIfUserFound(email);
@@ -38,6 +49,12 @@ public class UserServiceImpl implements UserService {
         userMap.put(user.getEmail(), user);
     }
 
+    /**
+     *
+     Updates optional fields (address and phone number) of an existing user with the specified email address.
+     @param email the email address of the user whose optional fields are to be updated
+     @param dto the UserOptionalFieldsDto object containing the optional fields to update
+     */
     @Override
     public void updateOptionalUserFields(String email, UserOptionalFieldsDto dto) {
         checkIfUserFound(email);
@@ -45,17 +62,35 @@ public class UserServiceImpl implements UserService {
         userMap.get(email).setPhoneNumber(dto.getPhoneNumber());
     }
 
+    /**
+     *
+     Deletes a user with the specified email address.
+     @param email the email address of the user to be deleted
+     */
     @Override
     public void deleteUser(String email) {
         checkIfUserFound(email);
         userMap.remove(email);
     }
 
+    /**
+     *
+     Returns the size of the users map.
+     @return the size of the users map
+     */
     @Override
     public int getUsersMapSize() {
         return userMap.size();
     }
 
+    /**
+     *
+     Retrieves a list of users born within the specified date range.
+     @param from the start date of the birth range (inclusive)
+     @param to the end date of the birth range (inclusive)
+     If from greater than to returns empty list
+     @return a list of User objects born within the specified date range
+     */
     @Override
     public List<User> birthRange(LocalDate from, LocalDate to) {
         if (from.isBefore(to)) {
@@ -67,11 +102,23 @@ public class UserServiceImpl implements UserService {
         return Collections.emptyList();
     }
 
+    /**
+     *
+     Checks if a user with the specified email address is present.
+     @param email the email address of the user to check
+     @return true if a user with the specified email address is present, false otherwise
+     */
     @Override
     public boolean isUserPresent(String email) {
         return userMap.containsKey(email);
     }
 
+    /**
+     *
+     Retrieves the user with the specified email address.
+     @param email the email address of the user to retrieve
+     @return the User object corresponding to the specified email address, or null if not found
+     */
     @Override
     public User readUser(String email) {
         checkIfUserFound(email);
