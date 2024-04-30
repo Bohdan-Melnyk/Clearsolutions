@@ -5,7 +5,6 @@ import com.example.clearsolutions.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
 
@@ -21,5 +20,7 @@ public interface UserService {
 
     List<User> birthRange(LocalDate from, LocalDate to);
 
-    Map<String, User> userMap();
+    boolean isUserPresent(String email);
+
+    User readUser(String email);
 }

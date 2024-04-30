@@ -40,8 +40,8 @@ public class UserServiceImplTest {
                 "Anderson",
                 LocalDate.of(86, 11, 10));
         userService.createUser(benjamin);
-        assertTrue(userService.userMap().containsKey("example@email.com"));
-        assertTrue(userService.userMap().containsKey("benjamin@email.com"));
+        assertTrue(userService.isUserPresent("example@email.com"));
+        assertTrue(userService.isUserPresent("benjamin@email.com"));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserServiceImplTest {
                 "Johnson",
                 LocalDate.of(2006, 4, 8));
         userService.updateUser("example@email.com", emily);
-        var updatedUser = userService.userMap().get(newEmail);
+        var updatedUser = userService.readUser(newEmail);
 
         assertEquals(emily.getBirthDate(), updatedUser.getBirthDate());
         assertEquals(emily.getFirstName(), updatedUser.getFirstName());
@@ -108,7 +108,7 @@ public class UserServiceImplTest {
 
         var optionalFieldsDto = Utils.optionalFieldsDto(address, phoneNumber);
         userService.updateOptionalUserFields(email, optionalFieldsDto);
-        var updatedUser = userService.userMap().get(email);
+        var updatedUser = userService.readUser(email);
 
         assertEquals(address, updatedUser.getAddress());
         assertEquals(phoneNumber, updatedUser.getPhoneNumber());
@@ -132,8 +132,8 @@ public class UserServiceImplTest {
         userService.deleteUser(jessicaEmail);
         userService.deleteUser(michaelEmail);
 
-        assertFalse(userService.userMap().containsKey(jessicaEmail));
-        assertFalse(userService.userMap().containsKey(michaelEmail));
+        assertFalse(userService.isUserPresent(jessicaEmail));
+        assertFalse(userService.isUserPresent(michaelEmail));
     }
 
     @Test

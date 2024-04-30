@@ -68,8 +68,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, User> userMap() {
-        return userMap;
+    public boolean isUserPresent(String email) {
+        return userMap.containsKey(email);
+    }
+
+    @Override
+    public User readUser(String email) {
+        checkIfUserFound(email);
+        return userMap.get(email);
     }
 
     private void isEighteenYearsOld(LocalDate dateOfBirth) {
@@ -79,13 +85,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkIfUserAlreadyExist(String email) {
-        if (userMap.containsKey(email)) {
+        if (isUserPresent(email)) {
             throw new UserAlreadyExistException("User with email " + email + " already exists");
         }
     }
 
     private void checkIfUserFound(String email) {
-        if (!userMap.containsKey(email)) {
+        if (!isUserPresent(email)) {
             throw new UserNotFoundException("User with email " + email + " doesn't exist");
         }
     }
