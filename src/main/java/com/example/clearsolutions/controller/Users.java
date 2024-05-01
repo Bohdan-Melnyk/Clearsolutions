@@ -27,12 +27,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
-public class UserController {
+public class Users {
 
     private final UserService userService;
 
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public ResponseEntity<ResponseDto> createUser(@RequestBody @Valid User user) {
         userService.createUser(user);
         return ResponseEntity
@@ -40,7 +40,7 @@ public class UserController {
                 .body(new ResponseDto(String.valueOf(HttpStatus.CREATED.value()), "User created successfully"));
     }
 
-    @PutMapping("/user")
+    @PutMapping("/users")
     public ResponseEntity<ResponseDto> updateUser(@RequestParam @Email String email,
                                                   @RequestBody @Valid User user) {
         userService.updateUser(email, user);
@@ -49,7 +49,7 @@ public class UserController {
                 .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User updated successfully"));
     }
 
-    @PatchMapping("/user")
+    @PatchMapping("/users")
     public ResponseEntity<ResponseDto> updateOptionalUserFields(@RequestParam @Email String email,
                                                                 @RequestBody @Valid UserOptionalFieldsDto dto) {
         userService.updateOptionalUserFields(email, dto);
@@ -58,7 +58,7 @@ public class UserController {
                 .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User updated successfully"));
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/users")
     public ResponseEntity<ResponseDto> deleteUser(@RequestParam @Email String email) {
         userService.deleteUser(email);
         return ResponseEntity
@@ -66,7 +66,7 @@ public class UserController {
                 .body(new ResponseDto(String.valueOf(HttpStatus.OK.value()), "User deleted successfully"));
     }
 
-    @PostMapping("/user/search")
+    @PostMapping("/users/search")
     public ResponseEntity<List<User>> userSearch(@RequestParam LocalDate from, @RequestParam LocalDate to) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.birthRange(from, to));
     }

@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(Users.class)
 public class UserControllerTest {
 
     private final MockMvc mockMvc;
@@ -128,10 +128,9 @@ public class UserControllerTest {
     }
 
     private User getUser() {
-        var john = Utils.createUser("example1@email.com",
+        return Utils.createUser("example1@email.com",
                 "John",
                 "Doe",
                 LocalDate.of(1990, 1, 2));
-        return john;
     }
 }
