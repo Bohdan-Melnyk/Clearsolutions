@@ -31,6 +31,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private static final String WRONG_EMAIL_FORMAT = "Wrong email format";
+
 
     @PostMapping("/users")
     public ResponseEntity<ResponseDto> createUser(@RequestBody @Valid User user) {
@@ -41,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<ResponseDto> updateUser(@RequestParam @Email String email,
+    public ResponseEntity<ResponseDto> updateUser(@RequestParam @Email(message = WRONG_EMAIL_FORMAT) String email,
                                                   @RequestBody @Valid User user) {
         userService.updateUser(email, user);
         return ResponseEntity
@@ -50,7 +52,7 @@ public class UserController {
     }
 
     @PatchMapping("/users")
-    public ResponseEntity<ResponseDto> updateOptionalUserFields(@RequestParam @Email String email,
+    public ResponseEntity<ResponseDto> updateOptionalUserFields(@RequestParam @Email(message = WRONG_EMAIL_FORMAT) String email,
                                                                 @RequestBody @Valid UserOptionalFieldsDto dto) {
         userService.updateOptionalUserFields(email, dto);
         return ResponseEntity
@@ -59,7 +61,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<ResponseDto> deleteUser(@RequestParam @Email String email) {
+    public ResponseEntity<ResponseDto> deleteUser(@RequestParam @Email(message = WRONG_EMAIL_FORMAT) String email) {
         userService.deleteUser(email);
         return ResponseEntity
                 .status(HttpStatus.OK)
