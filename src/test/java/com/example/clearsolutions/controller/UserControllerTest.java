@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebMvcTest(Users.class)
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
     private final MockMvc mockMvc;

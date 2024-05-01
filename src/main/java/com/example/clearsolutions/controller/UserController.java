@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
-public class Users {
+public class UserController {
 
     private final UserService userService;
 
